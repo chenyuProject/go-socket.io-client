@@ -298,21 +298,21 @@ func (d *decoder) DecodeData(v *packet) error {
 		d.Close()
 	}()
 	/*添加修改 chenyu 对message 消息做处理*/
-	if d.Message() == "message" {
-		buf, err := ioutil.ReadAll(d.current)
-		if err != nil {
-			fmt.Println("readall err:", err)
-		}
-		str := string(buf)
-		intf := v.Data.(*[]interface{})
-		(*intf)[0] = &str
-		//fmt.Printf("%s\n", buf)
-	} else {
-		decoder := json.NewDecoder(d.current)
-		if err := decoder.Decode(v.Data); err != nil {
-			return err
-		}
+	//if d.Message() == "message" {
+	buf, err := ioutil.ReadAll(d.current)
+	if err != nil {
+		fmt.Println("readall err:", err)
 	}
+	str := string(buf)
+	intf := v.Data.(*[]interface{})
+	(*intf)[0] = &str
+		//fmt.Printf("%s\n", buf)
+	//} else {
+	//	decoder := json.NewDecoder(d.current)
+	//	if err := decoder.Decode(v.Data); err != nil {
+	//		return err
+	//	}
+	//}
 	if v.Type == _BINARY_EVENT || v.Type == _BINARY_ACK {
 		binary, err := d.decodeBinary(v.attachNumber)
 		if err != nil {
